@@ -11,14 +11,14 @@
   (defun list_length_adjust (list_length) ; list_length + 1 to accomodate > vs >=
     (+ list_length 1))
  
-  (defun levels_deep (list_length inlayer)
+  (defun deepest_level (list_length inlayer)
   (if (> list_length inlayer)
-  (levels_deep (- list_length (power_of2 inlayer))(+ inlayer 1))
+  (deepest_level (- list_length (power_of2 inlayer))(+ inlayer 1))
   (- inlayer 1)
   ))
 
   (defun amt_per_level (amt list_length)
-    (/ amt (levels_deep list_length 1))
+    (/ amt (deepest_level list_length 1))
   )
 
   (defun total_positions_in_level (level) 
