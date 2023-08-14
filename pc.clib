@@ -25,7 +25,7 @@
     (+ (power_of2 level) 1)
   )
 
-  (defun end_position_deepest_level (total_levels start_position) ;cumulative sum of all levels used
+  (defun end_position_deepest_level (total_levels start_position) ;cumulative sum of all levels used. useful for calculating amt remainder. start_position is always 1(is there a better way to put this inside fx without messing up recursion?)
     (if 
       (= total_levels 0)
       start_position
