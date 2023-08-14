@@ -17,6 +17,10 @@
   (- inlayer 1)
   ))
 
+  (defun amt_per_level (amt list_length)
+    (/ amt (levels_deep list_length 1))
+  )
+
   (defun total_positions_in_level (level) 
     (+ (power_of2 level) 1)
   )
