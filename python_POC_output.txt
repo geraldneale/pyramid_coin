@@ -1,0 +1,190 @@
+Python3 Proof of Concept Output
+Total Coin Value: 2,000,000,000,000 mojos
+Total Payout Addresses: 30
+Total Pyramid Levels: 4
+Amount Per Level: 500,000,000,000
+Remaining Units: 4 of 17 in bottom level 4
+Remaining Mojos: 117647058823
+
+
+Address Position1: 0xdeadbeef0
+Units on Level 1: 3
+Value Per Unit on Level 1: 166666666666
+*First Position Payout Value: 284,313,725,489 Mojos or USD$8.52941176467
+
+
+Address Position2: 0xdeadbeef1
+Units on Level 1: 3
+Value Per Unit on Level 1: 166666666666
+Payout Level 1 Value: 166,666,666,666 Mojos or USD$4.99999999998
+
+
+Address Position3: 0xdeadbeef2
+Units on Level 1: 3
+Value Per Unit on Level 1: 166666666666
+Payout Level 1 Value: 166,666,666,666 Mojos or USD$4.99999999998
+
+
+Address Position4: 0xdeadbeef3
+Units on Level 2: 5
+Value Per Unit on Level 2: 100000000000
+Payout Level 2 Value: 100,000,000,000 Mojos or USD$3.0
+
+
+Address Position5: 0xdeadbeef4
+Units on Level 2: 5
+Value Per Unit on Level 2: 100000000000
+Payout Level 2 Value: 100,000,000,000 Mojos or USD$3.0
+
+
+Address Position6: 0xdeadbeef5
+Units on Level 2: 5
+Value Per Unit on Level 2: 100000000000
+Payout Level 2 Value: 100,000,000,000 Mojos or USD$3.0
+
+
+Address Position7: 0xdeadbeef6
+Units on Level 2: 5
+Value Per Unit on Level 2: 100000000000
+Payout Level 2 Value: 100,000,000,000 Mojos or USD$3.0
+
+
+Address Position8: 0xdeadbeef7
+Units on Level 2: 5
+Value Per Unit on Level 2: 100000000000
+Payout Level 2 Value: 100,000,000,000 Mojos or USD$3.0
+
+
+Address Position9: 0xdeadbeef8
+Units on Level 3: 9
+Value Per Unit on Level 3: 55555555555
+Payout Level 3 Value: 55,555,555,555 Mojos or USD$1.66666666665
+
+
+Address Position10: 0xdeadbeef9
+Units on Level 3: 9
+Value Per Unit on Level 3: 55555555555
+Payout Level 3 Value: 55,555,555,555 Mojos or USD$1.66666666665
+
+
+Address Position11: 0xdeadbeef10
+Units on Level 3: 9
+Value Per Unit on Level 3: 55555555555
+Payout Level 3 Value: 55,555,555,555 Mojos or USD$1.66666666665
+
+
+Address Position12: 0xdeadbeef11
+Units on Level 3: 9
+Value Per Unit on Level 3: 55555555555
+Payout Level 3 Value: 55,555,555,555 Mojos or USD$1.66666666665
+
+
+Address Position13: 0xdeadbeef12
+Units on Level 3: 9
+Value Per Unit on Level 3: 55555555555
+Payout Level 3 Value: 55,555,555,555 Mojos or USD$1.66666666665
+
+
+Address Position14: 0xdeadbeef13
+Units on Level 3: 9
+Value Per Unit on Level 3: 55555555555
+Payout Level 3 Value: 55,555,555,555 Mojos or USD$1.66666666665
+
+
+Address Position15: 0xdeadbeef14
+Units on Level 3: 9
+Value Per Unit on Level 3: 55555555555
+Payout Level 3 Value: 55,555,555,555 Mojos or USD$1.66666666665
+
+
+Address Position16: 0xdeadbeef15
+Units on Level 3: 9
+Value Per Unit on Level 3: 55555555555
+Payout Level 3 Value: 55,555,555,555 Mojos or USD$1.66666666665
+
+
+Address Position17: 0xdeadbeef16
+Units on Level 3: 9
+Value Per Unit on Level 3: 55555555555
+Payout Level 3 Value: 55,555,555,555 Mojos or USD$1.66666666665
+
+
+Address Position18: 0xdeadbeef17
+Units on Level 4: 17
+Value Per Unit on Level 4: 29411764705
+Payout Level 4 Value: 29,411,764,705 Mojos or USD$0.88235294115
+
+
+Address Position19: 0xdeadbeef18
+Units on Level 4: 17
+Value Per Unit on Level 4: 29411764705
+Payout Level 4 Value: 29,411,764,705 Mojos or USD$0.88235294115
+
+
+Address Position20: 0xdeadbeef19
+Units on Level 4: 17
+Value Per Unit on Level 4: 29411764705
+Payout Level 4 Value: 29,411,764,705 Mojos or USD$0.88235294115
+
+
+Address Position21: 0xdeadbeef20
+Units on Level 4: 17
+Value Per Unit on Level 4: 29411764705
+Payout Level 4 Value: 29,411,764,705 Mojos or USD$0.88235294115
+
+
+Address Position22: 0xdeadbeef21
+Units on Level 4: 17
+Value Per Unit on Level 4: 29411764705
+Payout Level 4 Value: 29,411,764,705 Mojos or USD$0.88235294115
+
+
+Address Position23: 0xdeadbeef22
+Units on Level 4: 17
+Value Per Unit on Level 4: 29411764705
+Payout Level 4 Value: 29,411,764,705 Mojos or USD$0.88235294115
+
+
+Address Position24: 0xdeadbeef23
+Units on Level 4: 17
+Value Per Unit on Level 4: 29411764705
+Payout Level 4 Value: 29,411,764,705 Mojos or USD$0.88235294115
+
+
+Address Position25: 0xdeadbeef24
+Units on Level 4: 17
+Value Per Unit on Level 4: 29411764705
+Payout Level 4 Value: 29,411,764,705 Mojos or USD$0.88235294115
+
+
+Address Position26: 0xdeadbeef25
+Units on Level 4: 17
+Value Per Unit on Level 4: 29411764705
+Payout Level 4 Value: 29,411,764,705 Mojos or USD$0.88235294115
+
+
+Address Position27: 0xdeadbeef26
+Units on Level 4: 17
+Value Per Unit on Level 4: 29411764705
+Payout Level 4 Value: 29,411,764,705 Mojos or USD$0.88235294115
+
+
+Address Position28: 0xdeadbeef27
+Units on Level 4: 17
+Value Per Unit on Level 4: 29411764705
+Payout Level 4 Value: 29,411,764,705 Mojos or USD$0.88235294115
+
+
+Address Position29: 0xdeadbeef28
+Units on Level 4: 17
+Value Per Unit on Level 4: 29411764705
+Payout Level 4 Value: 29,411,764,705 Mojos or USD$0.88235294115
+
+
+Address Position30: 0xdeadbeef29
+Units on Level 4: 17
+Value Per Unit on Level 4: 29411764705
+Payout Level 4 Value: 29,411,764,705 Mojos or USD$0.88235294115
+
+
+*First Position Payout Value = Unit Value + REMAINDER
