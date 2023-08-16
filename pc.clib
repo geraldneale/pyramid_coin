@@ -8,14 +8,12 @@
       (* 2 (power_of2 (- number 1))))
     )
 
-  (defun list_length_adjust (list_length) ; list_length + 1 to accomodate > vs >=
-    (+ list_length 1))
- 
   (defun deepest_level (list_length inlayer)
-  (if (> list_length inlayer)
-  (deepest_level (- list_length (power_of2 inlayer))(+ inlayer 1))
-  (- inlayer 1)
-  ))
+    (if (> inlayer list_length)
+    (- inlayer 1)
+    (levels_deep (- list_length (power_of2 inlayer))(+ inlayer 1))
+    )
+  )
 
   (defun amt_per_level (amt list_length)
     (/ amt (deepest_level list_length 1))
