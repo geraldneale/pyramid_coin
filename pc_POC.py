@@ -47,12 +47,13 @@ def remainder_in_units(total_addresses):  #deepest level will most times not fil
         remainder = accum_units - total_addresses    
     return remainder
 
-def remainder_mojos(amt_level,units_in_level,remainder_units): #remaining units x unit value gives remainder which all goes to the first payout address as a bonus
+def remainder_mojos(amt_level,units_in_level,remainder_units): #remainder_in_units * unit value gives remainder which all goes to the first payout address as a bonus
     
     remainder_mojos = int(amt_level/units_in_level * remainder_units)
     
     return remainder_mojos
 
+print("Pyramid Coin - Python3 Proof of Concept Output")
 print("Total Coin Value: {:,} mojos".format(AMT))
 total_addresses = count_addresses(XCH_ADDRESSES)
 print("Total Payout Addresses: {}".format(total_addresses))
@@ -62,7 +63,7 @@ level_amt = int(AMT/total_levels)
 print("Amount Per Level: {:,}".format(level_amt))
 remainder = remainder_in_units(total_addresses)
 print("Remaining Units: {} of {} in bottom level {}".format(remainder,units_per_level(total_levels),total_levels))
-remainder_mojos = remainder_mojos(level_amt,units_per_level(total_levels),remainder) #fix this
+remainder_mojos = remainder_mojos(level_amt,units_per_level(total_levels),remainder)
 print("Remaining Mojos: {}".format(remainder_mojos))
 print("\n")
 #index postion loop
