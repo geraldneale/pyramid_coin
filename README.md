@@ -1,2 +1,2 @@
 # pyramid_coin
-A geometric shotgun blast of Chia coins.
+A geometric shotgun blast of Chia XCH coins.
