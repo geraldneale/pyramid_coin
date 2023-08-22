@@ -11,7 +11,7 @@
   (defun deepest_level (list_length inlayer)
     (if (> inlayer list_length)
     (- inlayer 1)
-    (levels_deep (- list_length (power_of2 inlayer))(+ inlayer 1))
+    (deepest_level (- list_length (power_of2 inlayer))(+ inlayer 1))
     )
   )
 
