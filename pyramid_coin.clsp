@@ -1,0 +1,35 @@
+;todo 20230826                                                                                                                                                                                                                                                 
+;Think about a python driver                                                                                                                                                                                                                                                                                         
+;How many create_coins max? try in the simulator asap. FAIL: cost exceeded 0x028fa6ae00 at about 15 levels                                                                                                                                                                                                                     
+;CREATE_COIN comment ideally identifies the pyramid or defaults to the parent_puzzle_hash and appears in the wallet as a MEMO                                                                                                                                                                                                                                                      
+;This solution works for brun testing '((0x44fcfd36932c7362971a3fbac334e9c2ed422336e39f390bdd81bc155a3f9fa5 0xa96abe415bf54d7ea91120632044fd6877061fb8ca0045bbe6ffebd194ab9b3d 0x44fcfd36932c7362971a3fbac334e9c2ed422336e39f390bdd81bc155a3f9fa5 0xa96abe415bf54d7ea91120632044fd6877061fb8ca0045bbe6ffebd194ab9b3d  0x44fcfd36932c7362971a3f\
+bac334e9c2ed422336e39f390bdd81bc155a3f9fa5 0xa96abe415bf54d7ea91120632044fd6877061fb8ca0045bbe6ffebd194ab9b3d  0x44fcfd36932c7362971a3fbac334e9c2ed422336e39f390bdd81bc155a3f9fa5 0xa96abe415bf54d7ea91120632044fd6877061fb8ca0045bbe6ffebd194ab9b3d  0x44fcfd36932c7362971a3fbac334e9c2ed422336e39f390bdd81bc155a3f9fa5 0xa9\
+6abe415bf54d7ea91120632044fd6877061fb8ca0045bbe6ffebd194ab9b3d) 1000)'                                                                                                                                                                                                                                                        
+;what is difference between "l" and "list"?                                                                                                                                                                                                                                                                                    
+(mod (lst amt)
+(include pc_utils.clib)
+(defun-inline second_lst (lst) (r lst))
+
+(defun first_address_payout (lst amt)
+    (+  (/ (amt_per_level amt (len lst)) (total_positions_in_level 1))
+        (*  (- (end_position_deepest_level (deepest_level (len lst) 1) 0) (len lst))
+            (/ (amt_per_level amt (len lst)) (total_positions_in_level (deepest_level (len lst) 1)))
+        )
+    )
+)
+
+(defun pay_to (p2_lst lst amt position orig_list_length) ;orig_list_length increments down and is subtracted from the amts to avoid create_coin duplicate output.                                                                                                                                                             
+    (if (l p2_lst)
+        (c (list 51 (f p2_lst) (- (/ (amt_per_level amt (len lst)) (total_positions_in_level (deepest_level position 1))) orig_list_length) (list (q . testcomment2))) ;subtract unique amt mojos to guarantee unique output;e.g. avoid duplicate output error                                      
+        (pay_to (r p2_lst) lst amt (+ position 1)(- orig_list_length 1))
+        )
+    ()
+    )
+)
+
+(c
+;first address gets extra special bonus. gets the normal 1/3 of a level payout for level 1 + remainder payout which should average about 1/2 a level payout. 
+(list 51 (f lst) (first_address_payout lst amt) (list (q . testcomment))) ;this syntax appears to work for commenting create_coin                                                                                                                                                                                             
+(pay_to (second_lst lst) lst amt 2 (len lst)) ;seed with position 2 since it is the second address and the first address is treated special                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+)
+)
