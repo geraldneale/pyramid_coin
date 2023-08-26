@@ -1,2 +1,34 @@
 # pyramid_coin
 A geometric shotgun blast of Chia XCH coins.
+
+Very rough first version. The clsp files should all work at this point.
+
+Output should look like this if using the example solution.clsp:
+Level1- first address
+Amount received: 0.557598039205 TXCH
+
+Level1
+Amount received: 0.145833333315 TXCH
+Amount received: 0.145833333316 TXCH
+
+Level2
+Amount received: 0.087499999985 TXCH
+Amount received: 0.087499999988 TXCH
+Amount received: 0.087499999987 TXCH
+Amount received: 0.087499999984 TXCH
+Amount received: 0.087499999986 TXCH
+
+Level3
+Amount received: 0.048611111104 TXCH
+Amount received: 0.048611111108 TXCH
+Amount received: 0.0486111111 TXCH
+Amount received: 0.048611111106 TXCH
+Amount received: 0.048611111105 TXCH
+Amount received: 0.048611111102 TXCH
+Amount received: 0.048611111107 TXCH
+Amount received: 0.048611111101 TXCH
+Amount received: 0.048611111103 TXCH
+
+Level4
+Amount received: 0.025735294115 TXCH
+
