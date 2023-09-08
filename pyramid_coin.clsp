@@ -15,7 +15,7 @@
     )
 )
 
-(defun pay_to (p2_lst lst amt position orig_list_length) ;orig_list_length increments down and is subtracted from the amts to avoid create_coin duplicate output.                                                                                                                                                             
+(defun pay_to (p2_lst lst amt position orig_list_length) ;orig_list_length increments down and is subtracted from the amts to avoid create_coin duplicate output.      NOTE: might be able to (len lst) on input rather than inside the function                                                                                                                                                       
     (if (l p2_lst)
         (c (list 51 (f p2_lst) (- (/ (amt_per_level amt (len lst)) (total_positions_in_level (deepest_level position 1))) orig_list_length) (list (q . testcomment2))) ;subtract unique amt mojos to guarantee unique output;e.g. avoid duplicate output error                                      
         (pay_to (r p2_lst) lst amt (+ position 1)(- orig_list_length 1))
