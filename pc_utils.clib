@@ -1,18 +1,18 @@
 (
   ;; The code below is a list of functions utilized in pyramid_coin.clsp file                                                                                                                                                                                                                     
-  ;;                                                                                                                                                                                                                                                                                                                          
+  ;;                                                                                                                                                                                                                                                                                                                        
   (defun len (L) (if L (+ 1 (len (r L))) 0)) ;this might be better as inline function, but seems the same amt CLVM                                                                                                                                                                                                              
 
   (defun power_of2 (number)
       (if (= number 0)
-      1
-      (* 2 (power_of2 (- number 1))))
+          1
+          (* 2 (power_of2 (- number 1))))
   )
 
-  (defun deepest_level (list_length inlayer)
+  (defun deepest_level (list_length inlayer); always starts with inlayer = 1 
     (if (> inlayer list_length)
-    (- inlayer 1)
-    (deepest_level (- list_length (power_of2 inlayer))(+ inlayer 1))
+        (- inlayer 1)
+        (deepest_level (- list_length (power_of2 inlayer))(+ inlayer 1))
     )
   )
 
@@ -24,7 +24,7 @@
     (+ (power_of2 level) 1)
   )
 
-  (defun end_position_deepest_level (total_levels start_position) ;cumulative sum of all levels used. useful for calculating amt remainder. start_position is always 0(is there a better way to put this inside fx without messing up recursion?)                                                                             
+  (defun end_position_deepest_level (total_levels start_position) ;cumulative sum of all levels used. useful for calculating amt remainder. start_position is always 1(is there a better way to put this inside fx without messing up recursion?)                                                                             
     (if
       (= total_levels 0)
       start_position
@@ -35,6 +35,37 @@
       )
     )
   )
+  (defun used_positions_deepest_level (len_lst)
+    (- (total_positions_in_level (deepest_level len_lst 1))
+      (- 
+        (end_position_deepest_level (deepest_level len_lst 1) 0)
+          len_lst
+      )
+    )  
+  )
+(defun dispersion_offset_normal (position len_lst); goal is to offset every output, but make zero net gain of mojos
+        (+  (/ (total_positions_in_level (deepest_level position 1)) 2); dividing in half before starting offsets makes total zero out
+            (-
+                (- 
+                    (end_position_deepest_level (deepest_level position 1) 0)
+                    position
+                )
+                (- (total_positions_in_level (deepest_level position 1)) 1) ; offset by 1
+            )
+        )
+)
+  ;; boolean and macro
+  ;; This lets you write something like (if (and COND1 COND2 COND3) (do-something) (do-something-else))
+  (defmacro and ARGS
+    (if ARGS
+        (qq 
+            (if (unquote (f ARGS))
+                (unquote (c and (r ARGS)))
+                ()
+            )
+        )
+        1
+    )
+  )  
 
  )
-
