@@ -35,7 +35,7 @@
     )
 )    
 
-(defun secondary_payouts (p2_lst lst amt position orig_list_length normal_offset_qty) ;orig_list_length increments down and is subtracted from the amts to avoid create_coin duplicate output.      NOTE: might be able to (len lst) on input rather than inside the function                                                                                                                                                       
+(defun secondary_payouts (p2_lst lst amt position orig_list_length normal_offset_qty) ;NOTE: might be able to (len lst) on input rather than inside the function to save on CLVM cost                                                                                                                                                      
     (if (l p2_lst)
         (c (list CREATE_COIN (f p2_lst) 
             (+ (/ (amt_per_level amt (len lst)) (total_positions_in_level (deepest_level position 1)))
