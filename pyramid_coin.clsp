@@ -24,8 +24,8 @@
                         ()
                         1
                     );skip the zero amt and add 1 to negative to balance an even amt
-                ); if even do this
-            )     
+                )
+            ) ; if even do this    
             (if (= position len_lst);if 1... end position is first of a level then normal for all except last position has null offset
                 ();null offset. probably can just have this line with no if
                 (dispersion_offset_normal position len_lst)
