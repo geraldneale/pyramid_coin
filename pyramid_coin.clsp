@@ -1,32 +1,65 @@
-;todo 20230826                                                                                                                                                                                                                                                 
-;Think about a python driver                                                                                                                                                                                                                                                                                         
-;How many create_coins max? try in the simulator asap. FAIL: cost exceeded 0x028fa6ae00 at about 15 levels. Appears as if 100,000,000 min. might cover for all addresses in a single block                                                                                                                                                                                                                    
+;todo 20230911 nearly fully functional.                                                                                                                                                                                                                                        
+;Think about a python driver, security                                                                                                                                                                                                                                                                                         
+;How many create_coins max? From simulator FAIL: cost exceeded 0x028fa6ae00 at about 15 levels. Appears as if 100,000,000 min. might cover for all addresses in a single block                                                                                                                                                                                                                    
 ;CREATE_COIN comment ideally identifies the pyramid or defaults to the parent_puzzle_hash and appears in the wallet as a MEMO                                                                                                                                                                                                                                                      
-;This solution works for brun testing '((0xdeadbeef0 0xdeadbeef1 0xdeadbeef2 0xdeadbeef3 0xdeadbeef4 0xdeadbeef5 0xdeadbeef6 0xdeadbeef7 0xdeadbeef8) 1000)'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-(mod (lst amt)
+;This solution works for brun testing '((0xdeadbeef0 0xdeadbeef1 0xdeadbeef2 0xdeadbeef3 0xdeadbeef4 0xdeadbeef5 0xdeadbeef6 0xdeadbeef7 0xdeadbeef8) 1000 jerrys_pc)'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+(mod (lst amt msg)
 (include pc_utils.clib)
+(include condition_codes.clib)
 (defun-inline second_lst (lst) (r lst))
 
-(defun first_address_payout (lst amt)
-    (+  (/ (amt_per_level amt (len lst)) (total_positions_in_level 1))
-        (*  (- (end_position_deepest_level (deepest_level (len lst) 1) 0) (len lst))
-            (/ (amt_per_level amt (len lst)) (total_positions_in_level (deepest_level (len lst) 1)))
+(defun dispersion_offset (position len_lst positions_deepest_level); goal is to offset every output, but make zero net gain of mojos
+    (if (> position (- len_lst positions_deepest_level) );if deepest level do special stuff
+        (if (> positions_deepest_level 1);if not 1 then offset
+            (if (logand positions_deepest_level 1);check if odd
+                (+  (/ positions_deepest_level 2) 
+                    (- (end_position_deepest_level (- (deepest_level len_lst 1) 1) 1) position)    
+                    );if odd do this   
+                (- (+  (/ positions_deepest_level 2) 
+                    (- (end_position_deepest_level (- (deepest_level len_lst 1) 1) 1) position)    
+                    ) 
+                    (if (> (+  (/ positions_deepest_level 2)
+                        (- (end_position_deepest_level (- (deepest_level len_lst 1) 1) 1) position)    
+                        ) 0)
+                        ()
+                        1
+                    );skip the zero amt and add 1 to negative to balance an even amt
+                ); if even do this
+            )     
+            (if (= position len_lst);if 1... end position is first of a level then normal for all except last position has null offset
+                ();null offset. probably can just have this line with no if
+                (dispersion_offset_normal position len_lst)
+            )
         )
+        (dispersion_offset_normal position len_lst); if not deepest level do normal thing        
     )
-)
+)    
 
-(defun pay_to (p2_lst lst amt position orig_list_length) ;orig_list_length increments down and is subtracted from the amts to avoid create_coin duplicate output.      NOTE: might be able to (len lst) on input rather than inside the function                                                                                                                                                       
+(defun secondary_payouts (p2_lst lst amt position orig_list_length normal_offset_qty) ;orig_list_length increments down and is subtracted from the amts to avoid create_coin duplicate output.      NOTE: might be able to (len lst) on input rather than inside the function                                                                                                                                                       
     (if (l p2_lst)
-        (c (list 51 (f p2_lst) (- (/ (amt_per_level amt (len lst)) (total_positions_in_level (deepest_level position 1))) orig_list_length) (list (q . testcomment2))) ;subtract unique amt mojos to guarantee unique output;e.g. avoid duplicate output error                                      
-        (pay_to (r p2_lst) lst amt (+ position 1)(- orig_list_length 1))
+        (c (list CREATE_COIN (f p2_lst) 
+            (+ (/ (amt_per_level amt (len lst)) (total_positions_in_level (deepest_level position 1)))
+                (dispersion_offset position (len lst) normal_offset_qty))
+                    (list (dispersion_offset position (len lst) normal_offset_qty
+            )))                                      
+        (secondary_payouts (r p2_lst) lst amt (+ position 1)(- orig_list_length 1) normal_offset_qty)
         )
         ()
     )
 )
-
-(c
-;first address gets extra special bonus. gets the normal 1/3 of a level payout for level 1 + remainder payout which should average about 1/2 a level payout. 
-(list 51 (f lst) (first_address_payout lst amt) (list (q . testcomment))) ;this syntax appears to work for commenting create_coin                                                                                                                                                                                             
-(pay_to (second_lst lst) lst amt 2 (len lst)) ;seed with position 2 since it is the second address and the first address is treated special                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+(defun primary_payout_amt (lst amt)
+    (+ (+  (/ (amt_per_level amt (len lst)) (total_positions_in_level 1))
+        (*  (- (end_position_deepest_level (deepest_level (len lst) 1) 0) (len lst))
+            (/ (amt_per_level amt (len lst)) (total_positions_in_level (deepest_level (len lst) 1)))
+        )) 
+    1)
 )
+(c (list ASSERT_MY_AMOUNT amt) ;ensure the full amount of value in the coin has been inputted correctly
+    (c
+    ;first address gets extra special bonus. gets the normal 1/3 of a level payout for level 1 + remainder payout which should average about 1/2 a level payout. 
+    (list CREATE_COIN (f lst) (primary_payout_amt lst amt) (list msg))                                                                                                                                                                                              
+    ;seed with position 2 since it is the second address and the first address is treated special                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+    (secondary_payouts (second_lst lst) lst amt 2 (len lst) (used_positions_deepest_level (len lst))) 
+    )
+)    
 )
