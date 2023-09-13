@@ -1,0 +1,16 @@
+proven working puzzle 20230912
+--------
+(venv) gneale@hsh-NUC10i7FNH:~/Programming/pyramid_coin$ cdv rpc coinrecords --by puzzlehash 0x8c4b12e66294e68895b93f8721d799a9c227d522065d110583deeb206f25c006 -nd
+{
+    "62d0e5467349688740ed4ecea55a9ad874924cfb386d5c440c11ca3d9e746e2f": {
+        "coin": {
+            "amount": 10000,
+            "parent_coin_info": "0x9282b619a4c531150e7029f5e769358a9109e32cd927b71855b906c7c851cf59",
+            "puzzle_hash": "0x8c4b12e66294e68895b93f8721d799a9c227d522065d110583deeb206f25c006"
+        },
+        "coinbase": false,
+        "confirmed_block_index": 4222673,
+        "spent_block_index": 4222854,
+        "timestamp": 1694567103
+    }
+}
