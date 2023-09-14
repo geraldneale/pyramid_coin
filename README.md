@@ -50,4 +50,13 @@ Amount received: 0.048611111103 TXCH
 Level4
 
 Amount received: 0.025735294115 TXCH
+==
+Also check out
+==
+Twitter @geraldneale
 
+http://mojopuzzler.org - chialisp resources for the capable beginner.
+
+Discord Mojo Puzzler - https://discord.gg/SMFHEE2Z
+
+xch1hv4gj4vvdsyzn9hrhy9tn6hu6jwk82tyrs3t4r33468x642myjws8kh8xl
