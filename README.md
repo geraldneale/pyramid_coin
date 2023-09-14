@@ -1,9 +1,9 @@
 # pyramid_coin
 A geometric shotgun blast of Chia XCH coins.
 
-Very rough first version. The clsp files should all work at this point.
+Rough early version. The clsp files and output amounts should all work at this point.
 
-Output should look like this if using the example solution.clsp:
+Output will look similar, but not exact if using the example solution.clsp:
 
 Level1- first address
 
