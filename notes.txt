@@ -1,4 +1,4 @@
-proven working puzzle 20230912
+proven working puzzle on mainnet 20230912
 --------
 (venv) gneale@hsh-NUC10i7FNH:~/Programming/pyramid_coin$ cdv rpc coinrecords --by puzzlehash 0x8c4b12e66294e68895b93f8721d799a9c227d522065d110583deeb206f25c006 -nd
 {
