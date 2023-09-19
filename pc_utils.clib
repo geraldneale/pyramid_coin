@@ -20,7 +20,7 @@
     (/ amt (deepest_level list_length 1))
   )
 
-  (defun total_positions_in_level (level)
+  (defun-inline total_positions_in_level (level)
     (+ (power_of2 level) 1)
   )
 
@@ -43,7 +43,7 @@
       )
     )  
   )
-(defun dispersion_offset_normal (position len_lst); goal is to offset every output, but make zero net gain of mojos
+(defun-inline dispersion_offset_normal (position len_lst); goal is to offset every output, but make zero net gain of mojos
         (+  (/ (total_positions_in_level (deepest_level position 1)) 2); dividing in half before starting offsets makes total zero out
             (-
                 (- 
