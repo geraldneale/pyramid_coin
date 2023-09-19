@@ -1,7 +1,7 @@
 (
   ;; The code below is a list of functions utilized in pyramid_coin.clsp file                                                                                                                                                                                                                     
   ;;                                                                                                                                                                                                                                                                                                                        
-  (defun len (L) (if L (+ 1 (len (r L))) 0)) ;this might be better as inline function, but seems the same amt CLVM                                                                                                                                                                                                              
+  (defun len (L) (if L (+ 1 (len (r L))) 0))                                                                                                                                                                                                              
 
   (defun power_of2 (number)
       (if (= number 0)
