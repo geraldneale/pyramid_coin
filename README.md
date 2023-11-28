@@ -1,5 +1,7 @@
 # pyramid_coin
 A geometric shotgun blast of Chia XCH coins.
+![pc052v2](https://github.com/geraldneale/pyramid_coin/assets/53587595/f1995644-6d49-4cbb-9d64-0cb29762e938)
+
 
 Rough early version. The clsp files and output amounts should all work at this point.
 
