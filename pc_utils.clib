@@ -16,7 +16,7 @@
     )
   )
 
-  (defun-inline amt_per_level (amt list_length) ;this might be better as inline function                                                                                                                                                                                                                                      
+  (defun-inline amt_per_level (amt list_length)                                                                                                                                                                                                                                    
     (/ amt (deepest_level list_length 1))
   )
 
