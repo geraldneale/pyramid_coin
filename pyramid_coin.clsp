@@ -1,3 +1,5 @@
+;pyramid_coin gneale 20231129
+;a geometric shotgun blast of coins
 ;todo 20230911 nearly fully functional.                                                                                                                                                                                                                                        
 ;Think about a python driver, security                                                                                                                                                                                                                                                                                         
 ;How many create_coins max? From simulator FAIL: cost exceeded 0x028fa6ae00 at about 15 levels. Appears as if 100,000,000 min. might cover for all addresses in a single block                                                                                                                                                                                                                    
