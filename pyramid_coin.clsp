@@ -1,11 +1,11 @@
 ;pyramid_coin gneale 20231129
 ;a geometric shotgun blast of coins
-;todo 20230911 nearly fully functional.                                                                                                                                                                                                                                        
+;todo secure coin. add fees 20231201                                                                                                                                                                                                                                      
 ;Think about a python driver, security                                                                                                                                                                                                                                                                                         
-;How many create_coins max? From simulator FAIL: cost exceeded 0x028fa6ae00 at about 15 levels. Appears as if 100,000,000 min. might cover for all addresses in a single block                                                                                                                                                                                                                    
-;CREATE_COIN comment ideally identifies the pyramid or defaults to the parent_puzzle_hash and appears in the wallet as a MEMO                                                                                                                                                                                                                                                      
-;This solution works for brun testing '((0xdeadbeef0 0xdeadbeef1 0xdeadbeef2 0xdeadbeef3 0xdeadbeef4 0xdeadbeef5 0xdeadbeef6 0xdeadbeef7 0xdeadbeef8) 1000 jerrys_pc)'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-(mod (lst amt msg)
+;How many create_coins max? 1500 -2000 before block get full
+;From simulator FAIL: cost exceeded 0x028fa6ae00 at about 15 levels. Appears as if 100,000,000 min. might cover for all addresses in a single block                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+;This solution works for brun testing '((0xdeadbeef0 0xdeadbeef1 0xdeadbeef2 0xdeadbeef3 0xdeadbeef4 0xdeadbeef5 0xdeadbeef6 0xdeadbeef7 0xdeadbeef8) 1000 jerrys_pc0)'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+(mod (lst amt memo) ; list of reward xch addresses in order, the amount of the coin used to do all the math etc, and the memo that goes with each new coin. 
 (include pc_utils.clib)
 (include condition_codes.clib)
 (defun-inline second_lst (lst) (r lst))
@@ -37,14 +37,14 @@
     )
 )    
 
-(defun secondary_payouts (p2_lst lst amt position orig_list_length normal_offset_qty) ;NOTE: might be able to (len lst) on input rather than inside the function to save on CLVM cost                                                                                                                                                      
+(defun secondary_payouts (p2_lst lst amt position orig_list_length normal_offset_qty memo) ;NOTE: might be able to (len lst) on input rather than inside the function to save on CLVM cost                                                                                                                                                      
     (if (l p2_lst)
         (c (list CREATE_COIN (f p2_lst) 
             (+ (/ (amt_per_level amt (len lst)) (total_positions_in_level (deepest_level position 1)))
                 (dispersion_offset position (len lst) normal_offset_qty))
-                    (list (dispersion_offset position (len lst) normal_offset_qty
-            )))                                      
-        (secondary_payouts (r p2_lst) lst amt (+ position 1)(- orig_list_length 1) normal_offset_qty)
+                    (list memo)
+            )                                      
+        (secondary_payouts (r p2_lst) lst amt (+ position 1)(- orig_list_length 1) normal_offset_qty memo)
         )
         ()
     )
@@ -60,9 +60,9 @@
 (c (list ASSERT_MY_AMOUNT amt) ;ensure the full amount of value in the coin has been inputted correctly
     (c
     ;first address
-    (list CREATE_COIN (f lst) (primary_payout_amt lst amt) (list msg))                                                                                                                                                                                              
+    (list CREATE_COIN (f lst) (primary_payout_amt lst amt) (list memo))                                                                                                                                                                                              
     ;seed with position 2 since it is the second address and all the rest                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-    (secondary_payouts (second_lst lst) lst amt 2 (len lst) (used_positions_deepest_level (len lst))) 
+    (secondary_payouts (second_lst lst) lst amt 2 (len lst) (used_positions_deepest_level (len lst)) memo) 
     )
 )    
 )
