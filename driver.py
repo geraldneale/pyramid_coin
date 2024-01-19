@@ -18,10 +18,10 @@ AMOUNT_IN_MOJOS =   1000000000 #1 000 000 000 = 1 Majuju or .03 $USD
 FEE_IN_MOJOS_SPEND = 200000000 #pc spend. typically higher. don't want it to get stuck.
 FEE_IN_MOJOS_SEND =  70000000 # 70 Jujus Initial standard tx. typically lower
 MEMO = "PC2024"
-FINGERPRINT = "1667179713"
+FINGERPRINT = "123456789"
 PC_CLSP = "pyramid_coin.clsp"
 XCH_ADDRESS_LIST_FILE = "XCH_address_list.txt"
-HOME_PATH = "/home/gneale" 
+HOME_PATH = "<your path>" 
 ENVIRONMENT = "mainnet" #choices are "mainnet", "testnet", or "simulator"
 config = load_config(DEFAULT_ROOT_PATH, "config.yaml")
 self_hostname = config["self_hostname"] # localhost
@@ -46,8 +46,7 @@ else:
     CHIA_ENV = "mainnet"
     ADD_DATA = bytes.fromhex("ccd5bb71183532bff220ba46c268991a3ff07eb358e8255a65c30a2dce0e5fbb") #genesis challenge(works for mainnet)
     CHAIN_PREFIX = "xch"   
-#overide for my dumb setup gneale 20240114
-CHIA_ENV = "testnet10"
+
 CERT = ('{}/.chia/{}/config/ssl/full_node/private_full_node.crt'.format(HOME_PATH,CHIA_ENV), '{}/.chia/{}/config/ssl/full_node/private_full_node.key'.format(HOME_PATH,CHIA_ENV))
 HEADERS = {'Content-Type': 'application/json'}  
 
