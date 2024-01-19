@@ -17,16 +17,17 @@ from chia.rpc.full_node_rpc_client import FullNodeRpcClient
 AMOUNT_IN_MOJOS =   1000000000 #1 000 000 000 = 1 Majuju or .03 $USD
 FEE_IN_MOJOS_SPEND = 200000000 #pc spend. typically higher. don't want it to get stuck.
 FEE_IN_MOJOS_SEND =  70000000 # 70 Jujus Initial standard tx. typically lower
-MEMO = "<your memo here>"
-FINGERPRINT = "<your fingerprint here>"
+MEMO = "PC2024"
+FINGERPRINT = "1667179713"
 PC_CLSP = "pyramid_coin.clsp"
-HOME_PATH = "/<your path here>" 
+XCH_ADDRESS_LIST_FILE = "XCH_address_list.txt"
+HOME_PATH = "/home/gneale" 
 ENVIRONMENT = "mainnet" #choices are "mainnet", "testnet", or "simulator"
 config = load_config(DEFAULT_ROOT_PATH, "config.yaml")
 self_hostname = config["self_hostname"] # localhost
 full_node_rpc_port = config["full_node"]["rpc_port"]
 wallet_rpc_port = config["wallet"]["rpc_port"]
-file_list = open("XCH_address_list.txt").readlines()
+file_list = open(XCH_ADDRESS_LIST_FILE).readlines()
 XCH_ADDRESS_LIST = []
 for puzzlehash in file_list:
     puzzlehash = puzzlehash.replace("\n","")
@@ -159,7 +160,7 @@ def print_json(dict):
 
 if __name__=='__main__':
     pc_confirmed = False
-    wallet_ready = ready_verification("Are you sure wallet fingerprint {} is synced and ready?".format(FINGERPRINT))
+    wallet_ready = ready_verification("Is wallet fingerprint {} synced and ready?".format(FINGERPRINT))
     if wallet_ready:
         create_pc_ready = ready_verification("Would you like to create a pyramid coin?")
         if create_pc_ready:
@@ -178,9 +179,25 @@ if __name__=='__main__':
     if pc_confirmed:
         print("Unspent Pyramid Coin found onchain: {}".format(pc_confirmed))
         pc_ready = ready_verification("Would you like to spend it?")
-        if pc_ready:                                            
-            spend_bundle = create_spendbundle(pc_confirmed)
-            status = push_tx(spend_bundle)
-            print_json(status)
+        if pc_ready:
+            # with open(XCH_ADDRESS_LIST_FILE, "a") as file:  # the a opens it in append mode
+            #     for i in range(3):
+            #         line = next(file).strip()
+            #         print(line)
+            #     print("...")
+            #with open(XCH_ADDRESS_LIST_FILE) as myfile:
+            #    first_lines=myfile.readlines()[0:3] 
+            #print("{}\n...".format(first_lines))
+            file = open(XCH_ADDRESS_LIST_FILE)
+            print(file.read()) 
+            # close file
+            file.close()  
+            addresses_ready = ready_verification("Does this look like the proper address list to send coins to?")
+            if addresses_ready:
+                spend_bundle = create_spendbundle(pc_confirmed)
+                status = push_tx(spend_bundle)
+                print_json(status)
+            else:
+                print("Update the file {} and run program again. Goobye.".format(XCH_ADDRESS_LIST_FILE))    
     else:
-        print("End Program.")
+        print("End Program. Goodbye.")
