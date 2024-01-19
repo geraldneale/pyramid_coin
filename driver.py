@@ -179,14 +179,6 @@ if __name__=='__main__':
         print("Unspent Pyramid Coin found onchain: {}".format(pc_confirmed))
         pc_ready = ready_verification("Would you like to spend it?")
         if pc_ready:
-            # with open(XCH_ADDRESS_LIST_FILE, "a") as file:  # the a opens it in append mode
-            #     for i in range(3):
-            #         line = next(file).strip()
-            #         print(line)
-            #     print("...")
-            #with open(XCH_ADDRESS_LIST_FILE) as myfile:
-            #    first_lines=myfile.readlines()[0:3] 
-            #print("{}\n...".format(first_lines))
             file = open(XCH_ADDRESS_LIST_FILE)
             print(file.read()) 
             # close file
