@@ -181,9 +181,8 @@ if __name__=='__main__':
         if pc_ready:
             file = open(XCH_ADDRESS_LIST_FILE)
             print(file.read()) 
-            # close file
             file.close()  
-            addresses_ready = ready_verification("Does this look like the proper address list to send coins to?")
+            addresses_ready = ready_verification("Does this look like the proper address list for the shotgun blast of coins?")
             if addresses_ready:
                 spend_bundle = create_spendbundle(pc_confirmed)
                 status = push_tx(spend_bundle)
