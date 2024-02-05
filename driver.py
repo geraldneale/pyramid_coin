@@ -16,9 +16,9 @@ from chia.rpc.full_node_rpc_client import FullNodeRpcClient
 from chia.rpc.wallet_rpc_client import WalletRpcClient
 
 
-AMOUNT_IN_MOJOS =       1000000000 #1 000 000 000 = 1 Majuju or .03 $USD
-FEE_IN_MOJOS_SPEND =    200000000 #pc spend fees. typically higher than initial send. don't want pc to get stuck.
-FEE_IN_MOJOS_SEND =     70000000 # initial send fees. typically lower pc spend since it's a standard spend.
+AMOUNT_IN_MOJOS =       1000000000 #1 000 000 000 = 1 "Majuju" or roughly .03 $USD
+FEE_IN_MOJOS_SPEND =    200000000 #pyramic coin spend fees. typically higher than initial send. don't want pc to get stuck.
+FEE_IN_MOJOS_SEND =     70000000 # initial send fees. typically lower than pyramic coin spend fees since it's a standard spend.
 MEMO = "Signature_TEST"
 FINGERPRINT = 12345678 #put your own
 PC_CLSP = "pyramid_coin.clsp"   
