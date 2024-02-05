@@ -212,7 +212,6 @@ def check_fingerprint():
 
 if __name__=='__main__':
     pc_confirmed = False
-    print("Contrived Private key: {}".format(SK))
     print("Public key: {}".format(PUBLIC_KEY))
     print("Expected wallet FINGERPRINT:  {}".format(FINGERPRINT))
     if check_fingerprint(): #if proper wallet isn't configured quit
