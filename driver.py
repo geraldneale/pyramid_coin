@@ -52,6 +52,7 @@ else:
 CERT = ('{}/.chia/{}/config/ssl/full_node/private_full_node.crt'.format(HOME_PATH,CHIA_ENV), '{}/.chia/{}/config/ssl/full_node/private_full_node.key'.format(HOME_PATH,CHIA_ENV))
 HEADERS = {'Content-Type': 'application/json'}  
 
+#signature functions and variables
 async def get_sk_async():
     try:
         #create wallet api connection
@@ -64,13 +65,13 @@ async def get_sk_async():
     finally:
         wallet_client.close()
         await wallet_client.await_closed()
-
+        
 def get_sk():
     return asyncio.run(get_sk_async())
-   
 SK = PrivateKey.from_bytes(bytes.fromhex(get_sk()))
 PUBLIC_KEY: G1Element = SK.get_g1()
 
+#other functions
 def pc_puzzlehash():
     mod = load_clvm(PC_CLSP, package_or_requirement=__name__).curry(PUBLIC_KEY)
     treehash = mod.get_tree_hash()
