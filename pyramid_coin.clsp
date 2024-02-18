@@ -1,19 +1,30 @@
-;pyramid_coin was created by Gerald Neale around 20231129 - "A Geometric Shotgun Blast of Coins"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-;How many create_coins max? Probably 1500 -2000 before block get full
-;From simulator FAIL: cost exceeded 0x028fa6ae00 at about 15 levels. Appears as if 100,000,000 minimum amt might cover for all addresses in a single block                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-;This solution works for brun testing '((0xdeadbeef0 0xdeadbeef1 0xdeadbeef2 0xdeadbeef3 0xdeadbeef4 0xdeadbeef5 0xdeadbeef6 0xdeadbeef7 0xdeadbeef8) 1000 jerrys_pc0 1000)'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-(mod (PUBKEY memo lst amt fee) ; PUBKEY is curried in, memo, list of reward xch addresses in order(biggest payout first), total amount of mojos used for payouts, and the fee(amt + fee <= coin_amt or spendbundle will fail). 
+;pyramid_coin was created by Gerald Neale around 20231129 - "A Geometric Shotgun Blast of Coins"
+;todo: determine max qty CREATE_COINs per single block and minimum coin amount to cover it. Simulator - Fails at 800 CREATE_COINs with 1750000000000 mojos                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+(mod (PUBKEY memo lst amt fee) ; PUBKEY curried. Solution contains memo, list of reward puzzle_hashes in sequential preference(biggest payout first etc), total amount of mojos used for payouts, and the fee amount (NOTE: amt + fee <= coin_amt or spendbundle will fail). 
 (include pc_utils.clib)
 (include condition_codes.clib)
 (defun-inline second_lst (lst) (r lst))
 
-(defun dispersion_offset (position len_lst positions_deepest_level); goal is to offset every output, but make zero net gain of mojos
-    (if (> position (- len_lst positions_deepest_level) );if deepest level do special stuff
+; offset in all cases except deepest level which is exceptional because there may be empty positions
+(defun-inline dispersion_offset_normal (position len_lst)
+        (+  (/ (total_positions_in_level (deepest_level position 1)) 2); dividing in half, starting in the negative, and incrementing up makes total zero net output.
+            (-
+                (- 
+                    (end_position_deepest_level (deepest_level position 1) 0)
+                    position
+                )
+                (- (total_positions_in_level (deepest_level position 1)) 1) ; offset
+            )
+        )
+)
+
+(defun dispersion_offset (position len_lst positions_deepest_level); offset every output, but make zero net gain of mojos
+    (if (> position (- len_lst positions_deepest_level) );if deepest level do the following special stuff, else dispersion_offset_normal
         (if (> positions_deepest_level 1);if not 1 then offset
             (if (logand positions_deepest_level 1);check if odd
                 (+  (/ positions_deepest_level 2) 
                     (- (end_position_deepest_level (- (deepest_level len_lst 1) 1) 1) position)    
-                    );if odd do this   
+                    )     
                 (- (+  (/ positions_deepest_level 2) 
                     (- (end_position_deepest_level (- (deepest_level len_lst 1) 1) 1) position)    
                     ) 
@@ -34,11 +45,11 @@
     )
 )    
 
-(defun secondary_payouts (p2_lst lst amt position orig_list_length normal_offset_qty memo) ;NOTE: might be able to (len lst) on input rather than inside the function to save on CLVM cost                                                                                                                                                      
-    (if (l p2_lst)
+(defun secondary_payouts (p2_lst lst amt position orig_list_length normal_offset_qty memo) ;positions 2+ do the normal thing                                                                                                                                                 
+    (if (l p2_lst) ;run through the address list
         (c (list CREATE_COIN (f p2_lst) 
-            (+ (/ (amt_per_level amt (len lst)) (total_positions_in_level (deepest_level position 1)))
-                (dispersion_offset position (len lst) normal_offset_qty))
+            (+ (/ (amt_per_level amt (len lst)) (total_positions_in_level (deepest_level position 1))) ;amount for each position in the current level  
+                (dispersion_offset position (len lst) normal_offset_qty)) ;offset amts to prevent duplicate error. based on the number of used positions in the level and the specific position of this iteration.
                     (list memo)
             )                                      
         (secondary_payouts (r p2_lst) lst amt (+ position 1)(- orig_list_length 1) normal_offset_qty memo)
@@ -46,11 +57,15 @@
         ()
     )
 )
-(defun primary_payout_amt (lst amt) ;first address gets extra special bonus. gets the normal 1/3 of a level payout for level 1 + remainder payout which should average about 1/2 a level payout. 
-    (+ (+  (/ (amt_per_level amt (len lst)) (total_positions_in_level 1))
-        (*  (- (end_position_deepest_level (deepest_level (len lst) 1) 0) (len lst))
-            (/ (amt_per_level amt (len lst)) (total_positions_in_level (deepest_level (len lst) 1)))
-        )) 
+(defun primary_payout_amt (lst amt) ;first position gets special bonus amount. It gets the normal (1/3 of a level payout for level 1 which has 3 positions) + amount remainder which averages to 1/2 a level payout. 
+    (+ 
+        (+ ;normal amount 
+         (/ (amt_per_level amt (len lst)) (total_positions_in_level 1)); amount for each position in level 1 which first position is always in
+        ;amount remainder. added as an extra bonus amount for being first position
+        (*    
+            (- (end_position_deepest_level (deepest_level (len lst) 1) 0) (len lst)); amount of empty positons. take list length and subtract it from last position of deepest level.
+            (/ (amt_per_level amt (len lst)) (total_positions_in_level (deepest_level (len lst) 1))); amount for each position in the deepest level.
+       )) 
     1)
 )
 ;main
@@ -58,9 +73,9 @@
     (c (list RESERVE_FEE fee)
     (c (list AGG_SIG_ME PUBKEY (sha256tree (list memo lst amt fee)))
     (c
-    ;first address
+    ;first postion payout is special therefore it is isolated
     (list CREATE_COIN (f lst) (primary_payout_amt lst amt) (list memo))                                                                                                                                                                                              
-    ;seed with position 2 since it is the second address and all the rest                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+    ;positions 2+ are normal ; NOTE: 15 levels deep is possible but not tested ;simulator FAIL: cost exceeded 0x028fa6ae00 at about 15 levels.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
     (secondary_payouts (second_lst lst) lst amt 2 (len lst) (used_positions_deepest_level (len lst)) memo) 
 ))))
 )
