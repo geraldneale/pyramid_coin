@@ -20,7 +20,7 @@ AMOUNT_IN_MOJOS =       1000000000 #1 000 000 000 = 1 "Majuju" or roughly .03 $U
 FEE_IN_MOJOS_SPEND =    200000000 #pyramic coin spend fees. typically higher than initial send. don't want pc to get stuck.
 FEE_IN_MOJOS_SEND =     70000000 # initial send fees. typically lower than pyramic coin spend fees since it's a standard spend.
 MEMO = "Signature_TEST"
-FINGERPRINT = 12345678 #put your own
+FINGERPRINT = 2609917480 #put your own
 PC_CLSP = "pyramid_coin.clsp"   
 XCH_ADDRESS_LIST_FILE = "XCH_address_list.txt"
 HOME_PATH = "/home/<your username>" #put your own 
