@@ -1,3 +1,4 @@
+![2024pc2025](https://github.com/user-attachments/assets/5b0149c5-5d4f-4caa-b001-24365bb4cee8)
 
 # pyramid_coin
 A geometric shotgun blast of Chia XCH coins.
