@@ -4,8 +4,6 @@
 # pyramid_coin
 A geometric shotgun blast of Chia XCH coins.
 
-![pc052v2-smaller](https://github.com/geraldneale/pyramid_coin/assets/53587595/0d72f950-32dd-4eea-9d57-aa5018f9023e |width =200)
-
 Rough early version. The clsp files and output amounts should all work at this point.
 
 Output will look similar, but not exact depending on the quantity of your output addresses:
@@ -56,10 +54,13 @@ Level4
 
 Amount received: 0.025735294115 TXCH
 
+<img src="https://github.com/geraldneale/pyramid_coin/assets/53587595/0d72f950-32dd-4eea-9d57-aa5018f9023e" width="200">
 
 Also check out
 ==
 Twitter @geraldneale
+
+Instagram @gerald.neale
 
 http://mojopuzzler.org - chialisp resources for the capable beginner.
 
