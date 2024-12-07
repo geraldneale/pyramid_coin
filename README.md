@@ -1,9 +1,9 @@
-![2024pc2025](https://github.com/user-attachments/assets/5b0149c5-5d4f-4caa-b001-24365bb4cee8)
+![2024pc2025](https://github.com/user-attachments/assets/5b0149c5-5d4f-4caa-b001-24365bb4cee8 |width =200)
 
 # pyramid_coin
 A geometric shotgun blast of Chia XCH coins.
 
-![pc052v2-smaller](https://github.com/geraldneale/pyramid_coin/assets/53587595/0d72f950-32dd-4eea-9d57-aa5018f9023e)
+![pc052v2-smaller](https://github.com/geraldneale/pyramid_coin/assets/53587595/0d72f950-32dd-4eea-9d57-aa5018f9023e |width =200)
 
 Rough early version. The clsp files and output amounts should all work at this point.
 
