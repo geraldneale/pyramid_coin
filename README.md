@@ -15,6 +15,7 @@ $ cd pyramid_coin
 $ python3 -m venv venv
 $ . ./venv/bin/activate
 $ pip3 install -r requirements.txt
+$ cdv --version
 ```
 
 Rough early version. The clsp files and output amounts should all work at this point.
