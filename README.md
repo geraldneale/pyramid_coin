@@ -4,6 +4,19 @@
 # pyramid_coin
 A geometric shotgun blast of Chia XCH coins.
 
+Install
+-------
+
+Clone repository, go into it, make/activate a python virtualenv, and install requirements.
+
+```
+$ git clone https://github.com/geraldneale/pyramid_coin.git
+$ cd pyramid_coin
+$ python3 -m venv venv
+$ . ./venv/bin/activate
+$ pip3 install -r requirements.txt
+```
+
 Rough early version. The clsp files and output amounts should all work at this point.
 
 Output will look similar, but not exact depending on the quantity of your output addresses:
