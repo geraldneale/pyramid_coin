@@ -7,7 +7,7 @@ A geometric shotgun blast of Chia XCH coins.
 Install
 -------
 
-Clone repository, go into it, make/activate a python virtualenv, and install requirements.
+Clone repository, go into it, make/activate a python virtualenv, install requirements, and check requirements.
 
 ```
 $ git clone https://github.com/geraldneale/pyramid_coin.git
