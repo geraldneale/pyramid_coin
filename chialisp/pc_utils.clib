@@ -1,0 +1,67 @@
+(
+  ;; The code below is a list of functions utilized in pyramid_coin.clsp file                                                                                                                                                                                                                     
+  ;;                                                                                                                                                                                                                                                                                                                        
+  (defun len (L) (if L (+ 1 (len (r L))) 0))                                                                                                                                                                                                              
+
+  (defun power_of2 (number)
+      (if (= number 0)
+          1
+          (* 2 (power_of2 (- number 1))))
+  )
+  ;return the deepest level given a count of input addresses
+  (defun deepest_level (list_length inlayer); always starts with inlayer = 1 
+    (if (> inlayer list_length)
+        (- inlayer 1)
+        (deepest_level (- list_length (power_of2 inlayer))(+ inlayer 1))
+    )
+  )
+  ;return amount of mojos of each level given a count of input addresses
+  (defun-inline amt_per_level (amt list_length)                                                                                                                                                                                                                                    
+    (/ amt (deepest_level list_length 1))
+  )
+  ;return the amount of positions given a level number ; 3,5,9,17,33,65,129, etc
+  (defun-inline total_positions_in_level (level)
+    (+ (power_of2 level) 1)
+  )
+  ;return cumulative sum of positions in all levels used. useful for calculating amt remainder. start_position is always 1(is there a better way to put this inside fx without messing up recursion?)                                                                             
+  (defun end_position_deepest_level (total_levels start_position) 
+      (if
+      (= total_levels 0)
+      start_position
+      (end_position_deepest_level (- total_levels 1)
+        (+ start_position
+          (+ (power_of2 total_levels) 1)
+        )
+      )
+    )
+  )
+  ;return amount of positions deep into the deepest level given an address list length.
+  (defun used_positions_deepest_level (len_lst)
+    (- (total_positions_in_level (deepest_level len_lst 1))
+      (- 
+        (end_position_deepest_level (deepest_level len_lst 1) 0)
+          len_lst
+      )
+    )  
+  )
+  ;; boolean and macro
+  ;; This lets you write something like (if (and COND1 COND2 COND3) (do-something) (do-something-else))
+  (defmacro and ARGS
+    (if ARGS
+        (qq 
+            (if (unquote (f ARGS))
+                (unquote (c and (r ARGS)))
+                ()
+            )
+        )
+        1
+    )
+  )  
+  (defun sha256tree (TREE)
+    (if (l TREE)
+      (sha256 2 (sha256tree (f TREE)) (sha256tree (r TREE)))
+      (sha256 1 TREE)
+    ))  
+
+
+ )
