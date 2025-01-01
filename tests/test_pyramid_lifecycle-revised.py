@@ -69,5 +69,9 @@ async def test_pc() -> None:
         spend_bundle = SpendBundle([coin_spend],sig)
         pusht_sb = await client.push_tx(spend_bundle) 
         await sim.farm_block()
-        new_coin = await client.get_coin_records_by_puzzle_hash(puzzle_hashes[0])       
+        new_coin = await client.get_coin_records_by_puzzle_hash(puzzle_hashes[0])
+#        new_coin1 = await client.get_coin_records_by_puzzle_hash(puzzle_hashes[1])
+        new_coins = []
+        for ph in puzzle_hashes:
+            new_coins.append(await client.get_coin_records_by_puzzle_hash(ph))      
     breakpoint()
