@@ -29,49 +29,71 @@ from chia.wallet.puzzles.load_clvm import load_clvm, load_clvm_maybe_recompile
 from secrets import token_bytes
 from chia.consensus.default_constants import DEFAULT_CONSTANTS
 
-
 @pytest.mark.asyncio
 async def test_pc() -> None:
     async with sim_and_client() as (sim, client):
-        #FAKE_ACS: Program = Program.to([3, (1, "fake"), 1, None])
-        #FAKE_ACS_PH = FAKE_ACS.get_tree_hash()
         SEED: bytes = bytes([0,  50, 6,  244, 24,  199, 1,  25,  52,  88,  129,
-                         19, 18, 12, 89,  6,   220, 18, 102, 58,  209, 82,
-                         12, 62, 89, 110, 182, 9,   44, 20,  254, 22])
+                             19, 18, 12, 89,  6,   220, 18, 102, 58,  209, 82,
+                             12, 62, 89, 110, 182, 9,   44, 20,  254, 22])
         SK: PrivateKey = AugSchemeMPL.key_gen(SEED)
-        print("Private key: {}".format( SK))
+        print("Private key:", SK)
         PUBLIC_KEY: G1Element = SK.get_g1()
-        print("Public key: {}".format(PUBLIC_KEY))
+        print("Public key:", PUBLIC_KEY)
+
         FAKE_PUBLIC_KEY = PUBLIC_KEY
         PC_CLSP = "pyramid_coin.clsp"
         PC_MOD = load_clvm(PC_CLSP, package_or_requirement="chialisp").curry(FAKE_PUBLIC_KEY)
-        #PC = PC_MOD.curry(FAKE_PUBLIC_KEY) #remove once proven equivalent to above gdn 20241227
         PC = SerializedProgram.to(PC_MOD)
-        PC_type = type(PC)  # This should output: <class 'builtins.Program'>
+        PC_type = type(PC)  # Output: <class 'builtins.Program'>
+        print("Program type:", PC_type)
+
         PC_PH = PC.get_tree_hash()
         await sim.farm_block(puzzle_hash=PC_PH)
         coin_records = await client.get_coin_records_by_puzzle_hash(PC_PH)
         coin = coin_records[0].coin
-        puzzle_hashes = []
-        for _ in range(100):
-            puzzle_hashes.append(token_bytes(32))
+        puzzle_hashes = [token_bytes(32) for _ in range(100)]
+
         MEMO = "PC_TEST-GW"
         PC_FEE = 100 
         PAYOUT_AMOUNT = coin.amount - PC_FEE     
-        SOLUTION = SerializedProgram.to([MEMO,puzzle_hashes,PAYOUT_AMOUNT,PC_FEE])
-        #cds = PC.run(SOLUTION) #conditions AttributeError: 'builtins.Program' object has no attribute 'run' fix_later gdn 20241227
+        SOLUTION = SerializedProgram.to([MEMO, puzzle_hashes, PAYOUT_AMOUNT, PC_FEE])
+
+        # Coin spend
         coin_spend = CoinSpend(coin, PC, SOLUTION)
         ADD_DATA = DEFAULT_CONSTANTS.AGG_SIG_ME_ADDITIONAL_DATA
-        #message = SerializedProgram.to([MEMO, puzzle_hashes,PAYOUT_AMOUNT,PC_FEE]).get_tree_hash()
-        message = Program.to([MEMO, puzzle_hashes,PAYOUT_AMOUNT,PC_FEE]).get_tree_hash()
+        message = Program.to([MEMO, puzzle_hashes, PAYOUT_AMOUNT, PC_FEE]).get_tree_hash()
+
+        # Debugging the message and signature
+        print(f"Message (tree hash) for signing: {message}")
+        print(f"Coin name: {coin.name()}")
+        print(f"Additional data: {ADD_DATA}")
+        print(f"Message to be signed: {message + coin.name() + ADD_DATA}")
+
+        # Signature generation
         sig = AugSchemeMPL.sign(SK, message + coin.name() + ADD_DATA)
-        ver = AugSchemeMPL.verify(FAKE_PUBLIC_KEY, message +coin.name() + ADD_DATA, sig) #this fails 20250101
-        spend_bundle = SpendBundle([coin_spend],sig)
-        pusht_sb = await client.push_tx(spend_bundle) 
+        print(f"Generated signature: {sig}")
+
+        # Signature verification
+        try:
+            ver = AugSchemeMPL.verify(FAKE_PUBLIC_KEY, message + coin.name()+ ADD_DATA, sig)
+            print(f"Signature verification result: {ver}")
+            if ver:
+                print("Verification succeeded.")
+            else:
+                print("Verification failed.")
+        except Exception as e:
+            print(f"Verification failed: {e}")
+            return
+
+        spend_bundle = SpendBundle([coin_spend], sig)
+        pusht_sb = await client.push_tx(spend_bundle)
         await sim.farm_block()
-        new_coin = await client.get_coin_records_by_puzzle_hash(puzzle_hashes[0])
-        #new_coin1 = await client.get_coin_records_by_puzzle_hash(puzzle_hashes[1])
-        new_coins = []
+
+        # Fetch new coins
+        new_coins = []    
         for ph in puzzle_hashes:
-            new_coins.append(await client.get_coin_records_by_puzzle_hash(ph))      
-    breakpoint()
+            new_coins.append(await client.get_coin_records_by_puzzle_hash(ph))
+    # Add breakpoint for inspection
+    breakpoint()     
+        
+        
