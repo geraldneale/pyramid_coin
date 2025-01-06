@@ -63,7 +63,7 @@ async def test_signature_verification() -> None:
     
     # Assert that the verification fails with tampered signature
     #assert not tampered_signature_is_valid, "Signature verification unexpectedly passed for a tampered signature."
-    breakpoint()
+
 
 @pytest.mark.asyncio
 async def test_edge_cases() -> None:
