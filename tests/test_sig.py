@@ -94,6 +94,6 @@ async def test_pc() -> None:
         for ph in puzzle_hashes:
             new_coins.append(await client.get_coin_records_by_puzzle_hash(ph))
     # Add breakpoint for inspection
-    breakpoint()     
+    #breakpoint()     
         
         
