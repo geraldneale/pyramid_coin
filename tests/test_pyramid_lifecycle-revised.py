@@ -55,6 +55,7 @@ async def test_pc() -> None:
         puzzle_hashes = []
         for _ in range(100):
             puzzle_hashes.append(token_bytes(32))
+        print("Puzzle Hashes: {}".format(puzzle_hashes))
         MEMO = "PC_TEST-GW"
         PC_FEE = 100 
         PAYOUT_AMOUNT = coin.amount - PC_FEE     
@@ -74,4 +75,4 @@ async def test_pc() -> None:
         new_coins = []
         for ph in puzzle_hashes:
             new_coins.append(await client.get_coin_records_by_puzzle_hash(ph))      
-#breakpoint()
+    breakpoint()
