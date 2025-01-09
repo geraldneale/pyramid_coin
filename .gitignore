@@ -3,3 +3,4 @@ venv
 .pytest_cache
 chialisp/pyramid_coin-test.clsp
 chialisp/pyramid_coin.clsp.hex
+tests/spend_bundle.json

@@ -45,7 +45,6 @@ async def test_pc() -> None:
         FAKE_PUBLIC_KEY = PUBLIC_KEY
         PC_CLSP = "pyramid_coin.clsp"
         PC_MOD = load_clvm(PC_CLSP, package_or_requirement="chialisp").curry(FAKE_PUBLIC_KEY)
-        #PC = PC_MOD.curry(FAKE_PUBLIC_KEY) #remove once proven equivalent to above gdn 20241227
         PC = SerializedProgram.to(PC_MOD)
         PC_type = type(PC)  # This should output: <class 'builtins.Program'>
         PC_PH = PC.get_tree_hash()
@@ -63,15 +62,13 @@ async def test_pc() -> None:
         #cds = PC.run(SOLUTION) #conditions AttributeError: 'builtins.Program' object has no attribute 'run' fix_later gdn 20241227
         coin_spend = CoinSpend(coin, PC, SOLUTION)
         ADD_DATA = DEFAULT_CONSTANTS.AGG_SIG_ME_ADDITIONAL_DATA
-        #message = SerializedProgram.to([MEMO, puzzle_hashes,PAYOUT_AMOUNT,PC_FEE]).get_tree_hash()
         message = Program.to([MEMO, puzzle_hashes,PAYOUT_AMOUNT,PC_FEE]).get_tree_hash()
         sig = AugSchemeMPL.sign(SK, message + coin.name() + ADD_DATA)
-        ver = AugSchemeMPL.verify(FAKE_PUBLIC_KEY, message +coin.name() + ADD_DATA, sig) #this fails 20250101
+        ver = AugSchemeMPL.verify(FAKE_PUBLIC_KEY, message +coin.name() + ADD_DATA, sig) 
         spend_bundle = SpendBundle([coin_spend],sig)
         pusht_sb = await client.push_tx(spend_bundle) 
         await sim.farm_block()
         new_coin = await client.get_coin_records_by_puzzle_hash(puzzle_hashes[0])
-        #new_coin1 = await client.get_coin_records_by_puzzle_hash(puzzle_hashes[1])
         new_coins = []
         for ph in puzzle_hashes:
             new_coins.append(await client.get_coin_records_by_puzzle_hash(ph))      
