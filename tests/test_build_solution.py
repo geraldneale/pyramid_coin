@@ -51,36 +51,20 @@ async def test_pc() -> None:
         await sim.farm_block(puzzle_hash=PC_PH)
         coin_records = await client.get_coin_records_by_puzzle_hash(PC_PH)
         coin = coin_records[0].coin
-        #solution building starts here
-        puzzle_hashes = [
-        "74d42ddc2e8fe2fdb21bdb402564ec412bec69ac3c3eb53a4da594aea81717ac",
-        "02df5fa6dab7320eef167ed242dc22c7b37d5cb3cf622720d95ee4b616c35a38",
-        "5265c0f7fd37c2e42f99e93b389c8cb536aaa7a207bb0003429be2d1ae960fd5",
-        "873c0b21c059291e316cea5b8a41a9eca7e263d2f230c2eccbd86b0062bf18b7",
-        "35b17f6402acb8073154b7b0994de1ed463301cb8b6c310ad3ffda36a93840e5",
-        "dd9d9594f335dc17f606677988eff97b1c51d09490f4715527c4b41786daeb75",
-        "65f410973a6457d82dc5f4b295c1c7816f8628d450cd6acd4e4b586f36db90c9",
-        "2748818182c0c06341479a29b316924705ff0ea497f232db879278cb40712b2e",
-        "a6dcac1ce83905cb08265db87f7ae9ca686685f8f5f95b39d5b2415e8db95f1f",
-        "a6dcac1ce83905cb08265db87f7ae9ca686685f8f5f95b39d5b2415e8db95f1f",
-        "1b147fd24462187b4346288cd7348f148fdae36aefb3225a4bbc213b9bb7ae87",
-        "a6dcac1ce83905cb08265db87f7ae9ca686685f8f5f95b39d5b2415e8db95f1f",
-        "e85607223493688fb109922c751f82c5d4d4c0e8c071fba11351cf8c0d57275b",
-        "3fd068c050826aa6d26a1f14a8f5dbc2c67b5965076c7545258b5b3d23d861a4",
-        "7aef5c0deb1b90bdde6de76b1619be4ff31340b5a7eb699cad89f8660740d97b"
-        ]
+        # Open the puzzle_hashes file and read it into a list
+        with open('data.txt', 'r') as file:
+            puzzle_hashes = [line.strip() for line in file]
         phs = []
         for ph in puzzle_hashes:
             phs.append(bytes.fromhex(ph))
         print("Puzzle Hashes: {}".format(phs))
-        #breakpoint()
         MEMO = "PC_TEST-GW"
         PC_FEE = 100 
         PAYOUT_AMOUNT = coin.amount - PC_FEE     
         SOLUTION = SerializedProgram.to([MEMO,phs,PAYOUT_AMOUNT,PC_FEE])
         OLD_PC:Program = PC_MOD
         OLD_SOLUTION:Program = Program.to([MEMO,phs,PAYOUT_AMOUNT,PC_FEE])
-        cds = OLD_PC.run(OLD_SOLUTION) #conditions AttributeError: 'builtins.Program' object has no attribute 'run' fix_later gdn 20241227
+        cds = OLD_PC.run(OLD_SOLUTION) #conditions
         coin_spend = CoinSpend(coin, PC, SOLUTION)
         ADD_DATA = DEFAULT_CONSTANTS.AGG_SIG_ME_ADDITIONAL_DATA
         message = Program.to([MEMO, phs,PAYOUT_AMOUNT,PC_FEE]).get_tree_hash()
