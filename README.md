@@ -42,8 +42,6 @@ $ pytest tests --pdb
 ```
 NOTE: Works in Simulator Environment. MAINNET usage at your own risk.
 
-<img src="https://github.com/geraldneale/pyramid_coin/assets/53587595/0d72f950-32dd-4eea-9d57-aa5018f9023e" width="200">
-
 Also check out
 ==
 Twitter @geraldneale
