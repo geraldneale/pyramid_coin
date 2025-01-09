@@ -11,10 +11,12 @@ Using this tool, you can send XCH to Chia Blockchain and later spend it in way t
 
 Requirements
 ------------
+```
 chia-dev-tools
 pytest-asyncio
 pytest
 blspy
+```
 
 Install
 -------
