@@ -1,13 +1,13 @@
 <img src="https://github.com/user-attachments/assets/5b0149c5-5d4f-4caa-b001-24365bb4cee8" width="500">
 
-# pyramid_coin2
+# pyramid_coin
 A geometric shotgun blast of coins.
 
 Purpose
 ------------   
 This project is to load up the shotgun for NYE 2026.
 
-Using this tool, you can send XCH to Chia Blockchain and later spend it in way that it sends coins to XCH addresses in a list.
+Using this tool, you can send XCH to Chia Blockchain and later spend it in way that it sends coins to XCH addresses in a list; rewarding the first addresses in the list more than subsequent addresses. The payments tiers are in the shape of a pyramid.
 
 Requirements
 ------------
